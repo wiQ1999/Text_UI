@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Text_UI
 {
-    class UI
+    struct Vector2
     {
-        private Vector2 Position { get; set; }
+        public int X;
+        public int Y;
     }
 }
