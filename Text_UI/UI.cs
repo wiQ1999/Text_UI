@@ -32,37 +32,50 @@ namespace Text_UI
 
         #region Methods
 
-        private char CheckKeys(ConsoleKey a_key)
+        private string CheckKeys(ConsoleKey a_key)
         {
-            return 'w';
+            //Deklaracja zmiennych
+            string _sChar = string.Empty;
+
+            switch (a_key)
+            {
+                case ConsoleKey.D0:
+
+                    break;
+            }
+
+            //Zwracanie litery
+            return _sChar;
         }
 
         public void AdvancedUI()
         {
             Task text = Task.Run(() =>
-           {
-               while (true)
-               {
-                   //Deklaracja zmiennych
-                   ConsoleKey _key = ConsoleKey.Spacebar;//Przechowuje konsolową nazwę klawiszy
+            {
+                while (true)
+                {
+                    //Deklaracja zmiennych
+                    ConsoleKey _key = ConsoleKey.Spacebar;//Przechowuje konsolową nazwę klawiszy, manualne przypisanie losowego klawisza aby rozpocząć główną petlę
 
-                   while(_key != ConsoleKey.Enter)
-                   {
-                       //Zczytanie klawisza z klawiatury
-                       _key = Console.ReadKey(true).Key;
+                    //Pętla - działanie na tekscie
+                    while (_key != ConsoleKey.Enter)//Dopóki użykownik nie wciśnie Enter
+                    {
+                        //Zczytanie klawisza z klawiatury
+                        _key = Console.ReadKey(true).Key;
 
-                       char _cKey = CheckKeys(_key);
+                        //Przekonwertowanie znaku na litere, jeżeli to możliwe
+                        string _sKey = CheckKeys(_key);
 
-                       if(_key == ConsoleKey.Backspace && this.InsertText.Length > 0)
-                       {
-                           this.InsertText.Remove(this.InsertText.Length - 1);
-                       }
+                        if (_key == ConsoleKey.Backspace && this.InsertText.Length > 0)
+                        {
+                            this.InsertText.Remove(this.InsertText.Length - 1);
+                        }
 
 
 
-                   }
-               }
-           });
+                    }
+                }
+            });
         }
 
         #endregion
