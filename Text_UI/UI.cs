@@ -9,10 +9,25 @@ namespace Text_UI
     {
         #region Properties
 
+        /// <summary>
+        /// Represents 2D place for starting text position
+        /// </summary>
         public Vector2 InputPosition { get; set; }
+        /// <summary>
+        /// User updated text variable
+        /// </summary>
         private string InputText { get; set; }
+        /// <summary>
+        /// Represents 2D place for starting statement position
+        /// </summary>
         private Vector2 OutputPosition { get; set; }
+        /// <summary>
+        /// Text shows similar commands to written InputText
+        /// </summary>
         private string OutputText { get; set; }
+        /// <summary>
+        /// Maximum InputText length in the console
+        /// </summary>
         private int MaxTextLength { get; set; }
 
         #endregion
@@ -32,7 +47,21 @@ namespace Text_UI
 
         #region Methods
 
-        private string CheckKeys(ConsoleKey a_key)
+        public List<string> SelectOrders()
+        {
+            //Deklaracja zmiennych
+            List<string> Orders = new List<string>();
+
+            //Zwracanie listy rozkazów
+            return Orders;
+        }
+
+        /// <summary>
+        /// Converts console key to single chars
+        /// </summary>
+        /// <param name="a_key">Console key variable</param>
+        /// <returns>Single char</returns>
+        private string ConvertKeys(ConsoleKey a_key)
         {
             //Deklaracja zmiennych
             string _sChar = string.Empty;
@@ -79,6 +108,9 @@ namespace Text_UI
             return _sChar;
         }
 
+        /// <summary>
+        /// Responsible for reading the and interpretation text in real time
+        /// </summary>
         public void AdvancedUI()
         {
             Task text = Task.Run(() =>
@@ -88,6 +120,7 @@ namespace Text_UI
                     //Deklaracja zmiennych
                     ConsoleKey _key = ConsoleKey.Spacebar;//Przechowuje konsolową nazwę klawiszy, manualne przypisanie losowego klawisza aby rozpocząć główną petlę
                     int _iInputPosX = this.InputPosition.X;//Przechowuje pozycje ostatniego miejsca w tekście
+                    int _iOutputPosX = this.OutputPosition.X;//Przechowuje pozycje wiadomości zwrotnych
 
                     //Pętla - działanie na tekscie
                     do
@@ -119,7 +152,7 @@ namespace Text_UI
                             //Sprawdzanie długości nazwy klawisza funkcjonalnego konsoli
                             if (_key.ToString().Length > 1)//Jeżeli jest dłuższy niż 2 litery
                             {
-                                _sKey = CheckKeys(_key);
+                                _sKey = ConvertKeys(_key);
                             }
                             else//Jeżeli ma jedną literę
                             {
@@ -139,6 +172,10 @@ namespace Text_UI
                                 _iInputPosX++;
                             }
                         }
+
+                        //Wyświetlanie Outputu
+
+
                     } while (_key != ConsoleKey.Enter);//Dopóki użykownik nie wciśnie Enter
 
                     //Czyszczenie konsoli

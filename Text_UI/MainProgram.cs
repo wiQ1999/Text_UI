@@ -15,7 +15,7 @@ namespace Text_UI
 
             while (true)
             {
-                Thread.Sleep(10000);
+                Thread.Sleep(1000);
             }
 
             //Console.ReadKey();
