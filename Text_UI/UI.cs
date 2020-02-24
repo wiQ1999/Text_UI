@@ -87,15 +87,16 @@ namespace Text_UI
                 {
                     //Deklaracja zmiennych
                     ConsoleKey _key = ConsoleKey.Spacebar;//Przechowuje konsolową nazwę klawiszy, manualne przypisanie losowego klawisza aby rozpocząć główną petlę
+                    int _iInputPosX = this.InputPosition.X;//Przechowuje pozycje ostatniego miejsca w tekście
 
                     //Pętla - działanie na tekscie
-                    while (_key != ConsoleKey.Enter)//Dopóki użykownik nie wciśnie Enter
+                    do
                     {
                         //Deklaracja zmiennych
                         string _sKey = string.Empty;
 
                         //Ustawienie pozycji kursora
-                        Console.SetCursorPosition(this.InputPosition.X, this.InputPosition.Y);
+                        Console.SetCursorPosition(_iInputPosX, this.InputPosition.Y);
 
                         //Zczytanie klawisza z klawiatury
                         _key = Console.ReadKey(true).Key;
@@ -107,14 +108,13 @@ namespace Text_UI
                             this.InputText = this.InputText.Remove(this.InputText.Length - 1);
 
                             //Aktualziacja pozycji X
-                            this.InputPosition = new Vector2() { X = this.InputPosition.X - 1, Y = this.InputPosition.Y };
+                            _iInputPosX--;
 
                             //Usunięcie ostatniego znaku z konsoli
-                            Console.SetCursorPosition(this.InputPosition.X, this.InputPosition.Y);
+                            Console.SetCursorPosition(_iInputPosX, this.InputPosition.Y);
                             Console.Write(" ");
-
                         }
-                        else if(_key != ConsoleKey.Backspace && this.InputText.Length < this.MaxTextLength)//Jeżeli nie jest wciśnięty Backspace oraz długość tesktu nie jest za długa
+                        else if (_key != ConsoleKey.Backspace && this.InputText.Length < this.MaxTextLength)//Jeżeli nie jest wciśnięty Backspace oraz długość tesktu nie jest za długa
                         {
                             //Sprawdzanie długości nazwy klawisza funkcjonalnego konsoli
                             if (_key.ToString().Length > 1)//Jeżeli jest dłuższy niż 2 litery
@@ -126,20 +126,30 @@ namespace Text_UI
                                 _sKey = _key.ToString();
                             }
 
-                            //Dodanie znaku do ciagu znaków
-                            this.InputText += _sKey;
+                            //Sprawdzanie czy przekonwertowany znak nie jest pusty
+                            if (_sKey != string.Empty)
+                            {
+                                //Dodanie znaku do ciagu znaków
+                                this.InputText += _sKey;
 
-                            //Wyświetlanie tekstu
-                            Console.Write(this.InputText[this.InputText.Length - 1]);
+                                //Wyświetlanie tekstu
+                                Console.Write(this.InputText[this.InputText.Length - 1]);
 
-                            //Aktualziacja pozycji X
-                            this.InputPosition = new Vector2() { X = this.InputPosition.X + 1, Y = this.InputPosition.Y };
+                                //Aktualziacja pozycji X
+                                _iInputPosX++;
+                            }
                         }
+                    } while (_key != ConsoleKey.Enter);//Dopóki użykownik nie wciśnie Enter
+
+                    //Czyszczenie konsoli
+                    Console.SetCursorPosition(this.InputPosition.X, this.InputPosition.Y);
+                    for(int i = 0; i < this.InputText.Length; i++)
+                    {
+                        Console.Write(" ");
                     }
 
-                    //Czyszczenie konsoli i zmiennych
-                    Console.Clear();
-
+                    //Resetowanie zmiennych
+                    this.InputText = string.Empty;
                 }
             });
         }
