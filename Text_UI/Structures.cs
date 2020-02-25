@@ -12,4 +12,6 @@ namespace Text_UI
         public int X;
         public int Y;
     }
+
+
 }
