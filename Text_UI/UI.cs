@@ -61,7 +61,7 @@ namespace Text_UI
         /// </summary>
         /// <param name="a_key">Console key variable</param>
         /// <returns>Single char</returns>
-        private string ConvertKeys(ConsoleKey a_key)
+        private string ConvertibletKeys(ConsoleKey a_key)
         {
             //Deklaracja zmiennych
             string _sChar = string.Empty;
@@ -113,12 +113,12 @@ namespace Text_UI
         /// </summary>
         public void AdvancedUI()
         {
-            Task text = Task.Run(() =>
+            Task inputingText = Task.Run(() =>
             {
                 while (true)
                 {
                     //Deklaracja zmiennych
-                    ConsoleKey _key = ConsoleKey.Spacebar;//Przechowuje konsolową nazwę klawiszy, manualne przypisanie losowego klawisza aby rozpocząć główną petlę
+                    ConsoleKey _key = ConsoleKey.Spacebar;//Przechowuje konsolową nazwę klawiszy, manualne przypisanie klawisza spacji, aby rozpocząć główną petlę
                     int _iInputPosX = this.InputPosition.X;//Przechowuje pozycje ostatniego miejsca w tekście
                     int _iOutputPosX = this.OutputPosition.X;//Przechowuje pozycje wiadomości zwrotnych
 
@@ -126,12 +126,12 @@ namespace Text_UI
                     do
                     {
                         //Deklaracja zmiennych
-                        string _sKey = string.Empty;
+                        string _sKey = string.Empty;//Przechowuje znak zczytany z klawiatury
 
                         //Ustawienie pozycji kursora
                         Console.SetCursorPosition(_iInputPosX, this.InputPosition.Y);
 
-                        //Zczytanie klawisza z klawiatury
+                        //Zczytanie klawisza konsolowego z klawiatury
                         _key = Console.ReadKey(true).Key;
 
                         //Usuwanie jednego znaku - Backspace
@@ -149,10 +149,11 @@ namespace Text_UI
                         }
                         else if (_key != ConsoleKey.Backspace && this.InputText.Length < this.MaxTextLength)//Jeżeli nie jest wciśnięty Backspace oraz długość tesktu nie jest za długa
                         {
-                            //Sprawdzanie długości nazwy klawisza funkcjonalnego konsoli
+                            //Sprawdzanie długości nazwy klawisza konsolowego
                             if (_key.ToString().Length > 1)//Jeżeli jest dłuższy niż 2 litery
                             {
-                                _sKey = ConvertKeys(_key);
+                                //Konwersja z kalwisza konsolowego na ASCI
+                                _sKey = ConvertibletKeys(_key);
                             }
                             else//Jeżeli ma jedną literę
                             {
@@ -173,10 +174,10 @@ namespace Text_UI
                             }
                         }
 
-                        //Wyświetlanie Outputu
-
-
                     } while (_key != ConsoleKey.Enter);//Dopóki użykownik nie wciśnie Enter
+
+                    //Wysłanie popranej komendy poprzez mianę wartości boolowskiej
+
 
                     //Czyszczenie konsoli
                     Console.SetCursorPosition(this.InputPosition.X, this.InputPosition.Y);
