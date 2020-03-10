@@ -19,11 +19,13 @@ namespace Text_UI
             this.Commands.Add(new Command()
             {
                 _sCurrentWord = "BUY",
+                _bStarted = true,
                 _oNextWord = new List<string>() { "TOWER", "LEVEL", "HP", "CAR", "SKILL" }
             });
             this.Commands.Add(new Command()
             {
-                _sCurrentWord = "SELL", 
+                _sCurrentWord = "SELL",
+                _bStarted = true,
                 _oNextWord = new List<string>() { "TOWER", "LEVEL", "CAR" }
             });
 
@@ -61,22 +63,99 @@ namespace Text_UI
 
         }
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
+
+        private List<string> StartingCommands(string a_sSearchingWord)
+        {
+            //Deklaracja zmiennych
+            List<string> _oOutput = new List<string>();
+
+            //Pętla po wszystkich komendach
+            foreach (Command word in this.Commands)
+            {
+                //Jeżeli są to startowe komendy
+                if (word._sCurrentWord == a_sSearchingWord)
+                    _oOutput.Add(word._sCurrentWord);
+            }
+
+            //Zwrócenie startowych komend
+            return _oOutput;
+        }
+
+        private List<string> StartingCommands()
+        {
+            //Deklaracja zmiennych
+            List<string> _oOutput = new List<string>();
+
+            //Pętla po wszystkich komendach
+            foreach (Command word in this.Commands)
+            {
+                //Jeżeli są to startowe komendy
+                if (word._bStarted == true)
+                    _oOutput.Add(word._sCurrentWord);
+            }
+
+            //Zwrócenie startowych komend
+            return _oOutput;
+        }
 
         public List<string> OrderAnalysis(List<string> a_oWords)
         {
-            int i = 0;
+            //Deklaracja zmiennych
+            List<string> _oOutput = new List<string>();
 
-            foreach (string word in a_oWords)
+            if(a_oWords == null || a_oWords.Count == 0)//Jeżeli lista wyrazów jest psuta
             {
-
-
-                i++;
+                //Zwrócenie listy początkowych wyrazów
+                return StartingCommands();
             }
+            else//Jeżeli lista wyrazów nie jest psuta
+            {
+                //Deklaracja listy sugerowanych komend
+                List<string> _oSuggestion = StartingCommands();
 
-            return this.Commands[i]._oNextWord;
+                //Sprawdzanie każdego wyrazu z listy wyrazów
+                for (int i = 0; i < a_oWords.Count - 1; i++)
+                {
+                    //zmienna określająca czy konkretny wyraz w liście wystepuje w liście proponowanych
+                    bool _bIsCorrect = false;
+
+                    //Jezeli lista seugerowanych komend jest pusta
+                    if (_oSuggestion == null || _oSuggestion.Count == 0)
+                    {
+                        break;//Brak sugerowanych wyrazów
+                    }
+                    else
+                    {
+                        //Pętla po sugerowanych wyrazach
+                        for (int x = 1; x <= _oSuggestion.Count; x++)
+                        {
+                            //Jezeli sugerowany wyraz jest taki sam jak wyraz w liście wyrazów
+                            if (_oSuggestion[x] == a_oWords[x])
+                            {
+                                _bIsCorrect = true;
+                                break;
+                            }
+                        }
+
+                        //Jezeli komenda jest niepoprawna
+                        if (_bIsCorrect == false)
+                        {
+                            //Dodanie komunikatu błędu
+                            _oOutput.Add(_oOutput[i - 1] + " not found!");
+                            return _oOutput;
+                        }
+
+                        //aktualizacja sugerowanej listy
+                        _oSuggestion = StartingCommands(a_oWords[i]);
+                    }
+                }
+
+                //Zwrócenie listy sugerowanych nastepnych wyrazów
+                return _oOutput;
+            }
         }
 
 		#endregion

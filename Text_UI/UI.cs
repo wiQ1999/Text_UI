@@ -55,22 +55,32 @@ namespace Text_UI
         private void DisplayOutput(List<string> a_oSuggestions)
         {
             //Czyszczenie Output'u
+            Console.SetCursorPosition(this.OutputPosition.X, this.OutputPosition.Y);
+            for(int i = this.OutputPosition.X; i < this.OutTextLength; i++)
+            {
+                Console.Write(" ");
+            }
+
+            //Czyszczenie zmiennej
             this.OutputText = string.Empty;
 
-            //Pętla po wszystkich sugerowanych wyrazach
-            foreach (string word in a_oSuggestions)
+            if (a_oSuggestions != null)
             {
-                //Dodanie wrazu do ciągu znaków Output
-                this.OutputText += word + ", ";
-
-                //Jeżeli długość jest większa niż dozwolona
-                if (this.OutputText.Length > this.OutTextLength)
+                //Pętla po wszystkich sugerowanych wyrazach
+                foreach (string word in a_oSuggestions)
                 {
-                    //Usupełnienie na koniec
-                    this.OutputText += "...";
+                    //Dodanie wrazu do ciągu znaków Output
+                    this.OutputText += word + ", ";
 
-                    //Przerwanie wypisywania
-                    break;
+                    //Jeżeli długość jest większa niż dozwolona
+                    if (this.OutputText.Length > this.OutTextLength)
+                    {
+                        //Usupełnienie na koniec
+                        this.OutputText += "...";
+
+                        //Przerwanie wypisywania
+                        break;
+                    }
                 }
             }
 
