@@ -4,22 +4,17 @@ using System.Text;
 
 namespace Text_UI
 {
-    struct Command
-    {
-        public string _sCurrentWord;
-        //public string _sLastWord;
-        public List<string> _oNextWord;
-        public int _iMinNumber;
-        public int _iMaxNumber;
-    }
-
     class CommandList
     {
         public List<Command> Commands { get; set; }
 
+		#region Ctor
 
-        public CommandList()
+		public CommandList()
         {
+            //deklaracja listy dostępnych komend
+            Commands = new List<Command>();
+
             //Wyraz 1
             this.Commands.Add(new Command()
             {
@@ -66,6 +61,24 @@ namespace Text_UI
 
         }
 
+		#endregion
 
-    }
+		#region Methods
+
+        public List<string> OrderAnalysis(List<string> a_oWords)
+        {
+            int i = 0;
+
+            foreach (string word in a_oWords)
+            {
+
+
+                i++;
+            }
+
+            return this.Commands[i]._oNextWord;
+        }
+
+		#endregion
+	}
 }

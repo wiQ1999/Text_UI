@@ -20,6 +20,10 @@ namespace Text_UI
         /// <summary>
         /// Represents 2D place for starting statement position
         /// </summary>
+        private int InTextLength { get; set; }
+        /// <summary>
+        /// Maximum Output length in the console
+        /// </summary>
         private Vector2 OutputPosition { get; set; }
         /// <summary>
         /// Text shows similar commands to written InputText
@@ -28,32 +32,84 @@ namespace Text_UI
         /// <summary>
         /// Maximum InputText length in the console
         /// </summary>
-        private int MaxTextLength { get; set; }
+        private int OutTextLength { get; set; }
 
         #endregion
 
         #region Ctor
 
-        public UI(int a_iInputPositionX, int a_iInputPositionY, int a_iOutputPositionX, int a_iOutputPositionY, int a_iMaxLength)
+        public UI(int a_iInputPositionX, int a_iInputPositionY, int a_iOutputPositionX, int a_iOutputPositionY, int a_iInTextLength, int a_iOutTextLength)
         {
             this.InputPosition = new Vector2() { X = a_iInputPositionX, Y = a_iInputPositionY };
             this.InputText = string.Empty;
             this.OutputPosition = new Vector2() { X = a_iOutputPositionX, Y = a_iOutputPositionY };
             this.OutputText = string.Empty;
-            this.MaxTextLength = a_iMaxLength;
+            this.InTextLength = a_iInTextLength;
+            this.OutTextLength = a_iOutTextLength;
         }
 
         #endregion
 
         #region Methods
 
-        public List<string> SelectOrders()
+        private void DisplayOutput(List<string> a_oSuggestions)
         {
-            //Deklaracja zmiennych
-            List<string> Orders = new List<string>();
+            //Czyszczenie Output'u
+            this.OutputText = string.Empty;
 
-            //Zwracanie listy rozkazów
-            return Orders;
+            //Pętla po wszystkich sugerowanych wyrazach
+            foreach (string word in a_oSuggestions)
+            {
+                //Dodanie wrazu do ciągu znaków Output
+                this.OutputText += word + ", ";
+
+                //Jeżeli długość jest większa niż dozwolona
+                if (this.OutputText.Length > this.OutTextLength)
+                {
+                    //Usupełnienie na koniec
+                    this.OutputText += "...";
+
+                    //Przerwanie wypisywania
+                    break;
+                }
+            }
+
+            //Ustawienie kursora na pozycję output
+            Console.SetCursorPosition(this.OutputPosition.X, this.OutputPosition.Y);
+
+            //Wypisanie Output'u
+            Console.Write(this.OutputText);
+        }
+
+        private void CheckOrder()
+        {
+            //Deklaracja zminneych
+            List<string> _oWords = new List<string>();
+            string _sWord = string.Empty;
+
+            //Pętla po każdej literze ciągu znaków wpisanych przez użytkownika
+            for (int i = 0; i < this.InputText.Length; i++)
+            {
+                if (this.InputText[i] != ' ')//Jezeli natrafi na jakąś literę / nie spacebar
+                {
+                    //Zaktualizowanie wyrazu o znak
+                    _sWord += this.InputText[i].ToString();
+                }
+                else if(this.InputText[i] == ' ' && _sWord != string.Empty)//Jeżeli nie natrafi na literę i jeżeli zmienna wyrazu nie jest pusta
+                {
+                    //Wpsianie wyrazu do listy
+                    _oWords.Add(_sWord);
+
+                    //Zresetowanie zmiennej wyrazu
+                    _sWord = string.Empty;
+                }
+            }
+
+            //Deklaracja obiektu listy
+            CommandList list = new CommandList();
+
+            //Wyświetlenie Outputu
+            DisplayOutput(list.OrderAnalysis(_oWords));//Lista proponowanych następnych wyrazów jeżeli istnieją
         }
 
         /// <summary>
@@ -147,7 +203,7 @@ namespace Text_UI
                             Console.SetCursorPosition(_iInputPosX, this.InputPosition.Y);
                             Console.Write(" ");
                         }
-                        else if (_key != ConsoleKey.Backspace && this.InputText.Length < this.MaxTextLength)//Jeżeli nie jest wciśnięty Backspace oraz długość tesktu nie jest za długa
+                        else if (_key != ConsoleKey.Backspace && this.InputText.Length < this.InTextLength)//Jeżeli nie jest wciśnięty Backspace oraz długość tesktu nie jest za długa
                         {
                             //Sprawdzanie długości nazwy klawisza konsolowego
                             if (_key.ToString().Length > 1)//Jeżeli jest dłuższy niż 2 litery
@@ -174,10 +230,16 @@ namespace Text_UI
                             }
                         }
 
+                        //Sprawdzenie poprawności komendy
+                        CheckOrder();
+
                     } while (_key != ConsoleKey.Enter);//Dopóki użykownik nie wciśnie Enter
 
-                    //Wysłanie popranej komendy poprzez mianę wartości boolowskiej
-
+                    //Wyświtlenie komendy
+                    /*
+                    Console.SetCursorPosition(0, 0);
+                    Console.Write(this.InputText);
+                    */
 
                     //Czyszczenie konsoli
                     Console.SetCursorPosition(this.InputPosition.X, this.InputPosition.Y);

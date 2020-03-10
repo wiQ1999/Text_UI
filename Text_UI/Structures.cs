@@ -13,5 +13,15 @@ namespace Text_UI
         public int Y;
     }
 
-
+    /// <summary>
+    /// Struct where command options are storage 
+    /// </summary>
+    struct Command
+    {
+        public string _sCurrentWord;
+        //public string _sLastWord;
+        public List<string> _oNextWord;
+        public int _iMinNumber;
+        public int _iMaxNumber;
+    }
 }
