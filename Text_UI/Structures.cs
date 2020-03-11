@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Text_UI
 {
@@ -18,10 +16,30 @@ namespace Text_UI
     /// </summary>
     struct Command
     {
+        /// <summary>
+        /// Current word
+        /// </summary>
         public string _sCurrentWord;
+        /// <summary>
+        /// Represents bool value tells whether the word is used first
+        /// </summary>
         public bool _bStarted;
+        /// <summary>
+        /// List of nest suggest commands
+        /// </summary>
         public List<string> _oNextWord;
+        /// <summary>
+        /// Minimum number as command
+        /// </summary>
         public int _iMinNumber;
+        /// <summary>
+        /// Maximum number as command
+        /// </summary>
         public int _iMaxNumber;
+    }
+
+    struct SuggestList
+    {
+        List<string> 
     }
 }

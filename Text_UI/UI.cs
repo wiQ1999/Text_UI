@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Text_UI
@@ -63,6 +62,10 @@ namespace Text_UI
 
         #region Methods
 
+        /// <summary>
+        /// Cleans output bar and shows list of suggest next words to write
+        /// </summary>
+        /// <param name="a_oSuggestions">List of next suggest words to write</param>
         private void DisplayOutput(List<string> a_oSuggestions)
         {
             //Czyszczenie Output'u
@@ -113,6 +116,9 @@ namespace Text_UI
             Console.Write(this.OutputText);
         }
 
+        /// <summary>
+        /// Creates list of written words by user and connect with command list
+        /// </summary>
         private void CheckOrder()
         {
             //Deklaracja zminneych

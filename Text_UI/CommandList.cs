@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Text_UI
 {
     class CommandList
     {
-        public List<Command> Commands { get; set; }
+		#region Properties
+
+		/// <summary>
+		/// List of commands
+		/// </summary>
+		public List<Command> Commands { get; set; }
+
+		#endregion
 
 		#region Ctor
 
@@ -67,6 +72,11 @@ namespace Text_UI
 
         #region Methods
 
+        /// <summary>
+        /// Searches for next commands
+        /// </summary>
+        /// <param name="a_sSearchingWord">Previus word</param>
+        /// <returns>List of suggest words</returns>
         private List<string> NextCommands(string a_sSearchingWord)
         {
             //Deklaracja zmiennych
@@ -87,6 +97,10 @@ namespace Text_UI
             return _oOutput;
         }
 
+        /// <summary>
+        /// Searches for next commands
+        /// </summary>
+        /// <returns>List of suggest words</returns>
         private List<string> NextCommands()
         {
             //Deklaracja zmiennych
@@ -104,6 +118,11 @@ namespace Text_UI
             return _oOutput;
         }
 
+        /// <summary>
+        /// Analyzes given list of words and connect with next suggest words
+        /// </summary>
+        /// <param name="a_oWords">List of words written by user</param>
+        /// <returns>List of next suggest words</returns>
         public List<string> OrderAnalysis(List<string> a_oWords)
         {
             //Deklaracja zmiennych
