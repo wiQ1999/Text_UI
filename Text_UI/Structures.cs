@@ -20,7 +20,6 @@ namespace Text_UI
     {
         public string _sCurrentWord;
         public bool _bStarted;
-        //public string _sLastWord;
         public List<string> _oNextWord;
         public int _iMinNumber;
         public int _iMaxNumber;

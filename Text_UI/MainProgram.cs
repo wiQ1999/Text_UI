@@ -8,7 +8,7 @@ namespace Text_UI
     {
         static void Main(string[] args)
         {
-            UI ui = new UI(0, 10, 0, 11, 30, 20);
+            UI ui = new UI(0, 10, 0, 11, 30, 20, ", ", "...");
 
             ui.AdvancedUI();
             

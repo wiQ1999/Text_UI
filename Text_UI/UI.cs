@@ -33,12 +33,21 @@ namespace Text_UI
         /// Maximum InputText length in the console
         /// </summary>
         private int OutTextLength { get; set; }
+        /// <summary>
+        /// Text displayed between two suggested words
+        /// </summary>
+        private string OutputTextSeparator { get; set; }
+        /// <summary>
+        /// Text displayed at the end of output if the output is longer than maximum length of output
+        /// </summary>
+        private string OutputTextEnd { get; set; }
+        
 
         #endregion
 
         #region Ctor
 
-        public UI(int a_iInputPositionX, int a_iInputPositionY, int a_iOutputPositionX, int a_iOutputPositionY, int a_iInTextLength, int a_iOutTextLength)
+        public UI(int a_iInputPositionX, int a_iInputPositionY, int a_iOutputPositionX, int a_iOutputPositionY, int a_iInTextLength, int a_iOutTextLength, string a_sSeparatorText, string a_sEndText)
         {
             this.InputPosition = new Vector2() { X = a_iInputPositionX, Y = a_iInputPositionY };
             this.InputText = string.Empty;
@@ -46,6 +55,8 @@ namespace Text_UI
             this.OutputText = string.Empty;
             this.InTextLength = a_iInTextLength;
             this.OutTextLength = a_iOutTextLength;
+            this.OutputTextSeparator = a_sSeparatorText;
+            this.OutputTextEnd = a_sEndText;
         }
 
         #endregion
@@ -68,20 +79,30 @@ namespace Text_UI
             if (a_oSuggestions != null)
             {
                 //Pętla po wszystkich sugerowanych wyrazach
-                foreach (string word in a_oSuggestions)
+                for(int i = 0; i < a_oSuggestions.Count; i++)
                 {
                     //Jeżeli długość jest większa niż dozwolona
-                    if (this.OutputText.Length > this.OutTextLength)
+                    if (this.OutputText.Length >= this.OutTextLength)
                     {
-                        //Usupełnienie na koniec
-                        this.OutputText += "...";
+                        //Ucinanie końcówki tekstu aby zmieścił się w określonej długości
+                        this.OutputText = this.OutputText.Remove(this.OutTextLength - this.OutputTextEnd.Length);
+
+                        //Usupełnienie końcówki o podany tekst końcowy
+                        this.OutputText += this.OutputTextEnd;
 
                         //Przerwanie wypisywania
                         break;
                     }
 
                     //Dodanie wrazu do ciągu znaków Output
-                    this.OutputText += word + ", ";
+                    this.OutputText += a_oSuggestions[i];
+
+                    //Jeżeli nie jest to ostatni wyraz listy
+                    if (i + 1 < a_oSuggestions.Count)
+                    {
+                        //Dodanie textu separującego
+                        this.OutputText += this.OutputTextSeparator;
+                    }
                 }
             }
 
