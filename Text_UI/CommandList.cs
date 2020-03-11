@@ -67,7 +67,7 @@ namespace Text_UI
 
         #region Methods
 
-        private List<string> StartingCommands(string a_sSearchingWord)
+        private List<string> NextCommands(string a_sSearchingWord)
         {
             //Deklaracja zmiennych
             List<string> _oOutput = new List<string>();
@@ -77,14 +77,17 @@ namespace Text_UI
             {
                 //Jeżeli są to startowe komendy
                 if (word._sCurrentWord == a_sSearchingWord)
-                    _oOutput.Add(word._sCurrentWord);
+                {
+                    _oOutput = word._oNextWord;
+                    break;
+                }
             }
 
             //Zwrócenie startowych komend
             return _oOutput;
         }
 
-        private List<string> StartingCommands()
+        private List<string> NextCommands()
         {
             //Deklaracja zmiennych
             List<string> _oOutput = new List<string>();
@@ -109,15 +112,15 @@ namespace Text_UI
             if(a_oWords == null || a_oWords.Count == 0)//Jeżeli lista wyrazów jest psuta
             {
                 //Zwrócenie listy początkowych wyrazów
-                return StartingCommands();
+                return NextCommands();
             }
             else//Jeżeli lista wyrazów nie jest psuta
             {
                 //Deklaracja listy sugerowanych komend
-                List<string> _oSuggestion = StartingCommands();
+                List<string> _oSuggestion = NextCommands();
 
                 //Sprawdzanie każdego wyrazu z listy wyrazów
-                for (int i = 0; i < a_oWords.Count - 1; i++)
+                for (int i = 0; i < a_oWords.Count; i++)
                 {
                     //zmienna określająca czy konkretny wyraz w liście wystepuje w liście proponowanych
                     bool _bIsCorrect = false;
@@ -130,10 +133,10 @@ namespace Text_UI
                     else
                     {
                         //Pętla po sugerowanych wyrazach
-                        for (int x = 1; x <= _oSuggestion.Count; x++)
+                        for (int x = 0; x < _oSuggestion.Count; x++)
                         {
                             //Jezeli sugerowany wyraz jest taki sam jak wyraz w liście wyrazów
-                            if (_oSuggestion[x] == a_oWords[x])
+                            if (_oSuggestion[x] == a_oWords[i])
                             {
                                 _bIsCorrect = true;
                                 break;
@@ -144,14 +147,17 @@ namespace Text_UI
                         if (_bIsCorrect == false)
                         {
                             //Dodanie komunikatu błędu
-                            _oOutput.Add(_oOutput[i - 1] + " not found!");
+                            _oOutput.Add(a_oWords[i] + " not found!");
                             return _oOutput;
                         }
 
                         //aktualizacja sugerowanej listy
-                        _oSuggestion = StartingCommands(a_oWords[i]);
+                        _oSuggestion = NextCommands(a_oWords[i]);
                     }
                 }
+
+                //Nadmisanie Output'u sugerowanymi komendami
+                _oOutput = _oSuggestion;
 
                 //Zwrócenie listy sugerowanych nastepnych wyrazów
                 return _oOutput;

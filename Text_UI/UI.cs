@@ -64,14 +64,12 @@ namespace Text_UI
             //Czyszczenie zmiennej
             this.OutputText = string.Empty;
 
+            //Jeżeli sugerowane wyrazy istnieją
             if (a_oSuggestions != null)
             {
                 //Pętla po wszystkich sugerowanych wyrazach
                 foreach (string word in a_oSuggestions)
                 {
-                    //Dodanie wrazu do ciągu znaków Output
-                    this.OutputText += word + ", ";
-
                     //Jeżeli długość jest większa niż dozwolona
                     if (this.OutputText.Length > this.OutTextLength)
                     {
@@ -81,6 +79,9 @@ namespace Text_UI
                         //Przerwanie wypisywania
                         break;
                     }
+
+                    //Dodanie wrazu do ciągu znaków Output
+                    this.OutputText += word + ", ";
                 }
             }
 
