@@ -70,7 +70,7 @@ namespace Text_UI
         {
             //Czyszczenie Output'u
             Console.SetCursorPosition(this.OutputPosition.X, this.OutputPosition.Y);
-            for(int i = this.OutputPosition.X; i < this.OutTextLength; i++)
+            for(int i = 0; i < this.OutTextLength; i++)
             {
                 Console.Write(" ");
             }
@@ -81,9 +81,22 @@ namespace Text_UI
             //Jeżeli sugerowane wyrazy istnieją
             if (a_oSuggestions != null)
             {
+                //Zmienna określająca indeks list
+                int i = 0;
+
                 //Pętla po wszystkich sugerowanych wyrazach
-                for(int i = 0; i < a_oSuggestions.Count; i++)
+                do
                 {
+                    //Dodanie wrazu do ciągu znaków Output
+                    this.OutputText += a_oSuggestions[i];
+
+                    //Jeżeli nie jest to ostatni wyraz listy
+                    if (i + 1 < a_oSuggestions.Count)
+                    {
+                        //Dodanie textu separującego
+                        this.OutputText += this.OutputTextSeparator;
+                    }
+
                     //Jeżeli długość jest większa niż dozwolona
                     if (this.OutputText.Length >= this.OutTextLength)
                     {
@@ -96,17 +109,8 @@ namespace Text_UI
                         //Przerwanie wypisywania
                         break;
                     }
-
-                    //Dodanie wrazu do ciągu znaków Output
-                    this.OutputText += a_oSuggestions[i];
-
-                    //Jeżeli nie jest to ostatni wyraz listy
-                    if (i + 1 < a_oSuggestions.Count)
-                    {
-                        //Dodanie textu separującego
-                        this.OutputText += this.OutputTextSeparator;
-                    }
                 }
+                while (++i < a_oSuggestions.Count);//Dopóki indeks jest mniejszy niż długość lsity
             }
 
             //Ustawienie kursora na pozycję output
