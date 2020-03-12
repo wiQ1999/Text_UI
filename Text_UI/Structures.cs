@@ -29,6 +29,10 @@ namespace Text_UI
         /// </summary>
         public List<string> _oNextWord;
         /// <summary>
+        /// Represents bool value tells whether number range commands is used
+        /// </summary>
+        public bool _bIsNumeric;
+        /// <summary>
         /// Minimum number as command
         /// </summary>
         public int _iMinNumber;
@@ -36,10 +40,5 @@ namespace Text_UI
         /// Maximum number as command
         /// </summary>
         public int _iMaxNumber;
-    }
-
-    struct SuggestList
-    {
-        List<string> 
     }
 }

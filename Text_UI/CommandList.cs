@@ -23,6 +23,12 @@ namespace Text_UI
             //Wyraz 1
             this.Commands.Add(new Command()
             {
+                _sCurrentWord = "ADD",
+                _bStarted = true,
+                _oNextWord = new List<string>() { "COMMAND", "WARMING" }
+            });
+            this.Commands.Add(new Command()
+            {
                 _sCurrentWord = "BUY",
                 _bStarted = true,
                 _oNextWord = new List<string>() { "TOWER", "LEVEL", "HP", "CAR", "SKILL" }
@@ -37,19 +43,22 @@ namespace Text_UI
             //Wyraz 2
             this.Commands.Add(new Command()
             {
-                _sCurrentWord = "TOWER", 
-                _iMinNumber = 1, 
+                _sCurrentWord = "TOWER",
+                _bIsNumeric = true,
+                _iMinNumber = 1,
                 _iMaxNumber = 3
             });
             this.Commands.Add(new Command()
             {
                 _sCurrentWord = "LEVEL",
+                _bIsNumeric = true,
                 _iMinNumber = 1,
                 _iMaxNumber = 8
             });
             this.Commands.Add(new Command()
             {
                 _sCurrentWord = "HP",
+                _bIsNumeric = true,
                 _iMinNumber = 1,
                 _iMaxNumber = 100
             });
@@ -65,7 +74,34 @@ namespace Text_UI
             });
 
             //Wyraz 3
+            this.Commands.Add(new Command()
+            {
+                _sCurrentWord = "FORD",
+                _oNextWord = new List<string> { "FOCUS", "MUSTANG", "MONDEO" }
+            });
 
+            //Wyraz 4
+            this.Commands.Add(new Command()
+            {
+                _sCurrentWord = "FOCUS",
+                _bIsNumeric = true,
+                _iMinNumber = 1998,
+                _iMaxNumber = 2008
+            });
+            this.Commands.Add(new Command()
+            {
+                _sCurrentWord = "MUSTANG",
+                _bIsNumeric = true,
+                _iMinNumber = 1964,
+                _iMaxNumber = 2020
+            });
+            this.Commands.Add(new Command()
+            {
+                _sCurrentWord = "MONDEO",
+                _bIsNumeric = true,
+                _iMinNumber = 1993,
+                _iMaxNumber = 2020
+            });
         }
 
         #endregion
@@ -85,10 +121,25 @@ namespace Text_UI
             //Pętla po wszystkich komendach
             foreach (Command word in this.Commands)
             {
-                //Jeżeli są to startowe komendy
+                //Jeżeli szukane słowo jest zgodne z elementem w liście
                 if (word._sCurrentWord == a_sSearchingWord)
                 {
-                    _oOutput = word._oNextWord;
+                    //Dodaj listę nastepnych słów do listy wyjściowej
+                    if(word._oNextWord != null)//Jeżelu lista następnych komend nie jest pusta
+                        _oOutput = word._oNextWord;
+
+                    //Jeżeli określono istnienie zakresu lcizbowego
+                    if(word._bIsNumeric == true)
+                    {
+                        //Pętla po zakresie liczbowym
+                        for (int i = word._iMinNumber; i <= word._iMaxNumber; i++)
+                        {
+                            //Dodanie liczby do listy
+                            _oOutput.Add(i.ToString());
+                        }
+                    }
+
+                    //Przerwij szukanie
                     break;
                 }
             }
@@ -98,7 +149,7 @@ namespace Text_UI
         }
 
         /// <summary>
-        /// Searches for next commands
+        /// Searches for next commands, used for starting words command
         /// </summary>
         /// <returns>List of suggest words</returns>
         private List<string> NextCommands()
@@ -111,7 +162,7 @@ namespace Text_UI
             {
                 //Jeżeli są to startowe komendy
                 if (word._bStarted == true)
-                    _oOutput.Add(word._sCurrentWord);
+                    _oOutput.Add(word._sCurrentWord);//Przypisanie słowa do listy
             }
 
             //Zwrócenie startowych komend
